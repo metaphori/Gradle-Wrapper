@@ -1,7 +1,6 @@
 package it.unibo.iot.domain.impl.support;
 
-import it.unibo.iot.interaction.impl.TCPConnectionFactory;
-import it.unibo.iot.interaction.impl.ZMQConnectionFactory;
+import it.unibo.iot.interaction.impl.ZMQConnectionFactories;
 import it.unibo.iot.interaction.interfaces.ConnectionHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public class EventService implements Runnable {
     @Override
     public void run() {
         try {
-            ConnectionHandle handle = new ZMQConnectionFactory().connection().connectAsServer(port);
+            ConnectionHandle handle = ZMQConnectionFactories.PubSub.connection().connectAsServer(port);
             String ev = null;
             while ((ev = handle.receive()) != null){
                 L.info("Got event " + ev);

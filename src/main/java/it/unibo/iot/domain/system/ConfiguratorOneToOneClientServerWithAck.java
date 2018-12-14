@@ -1,43 +1,38 @@
 package it.unibo.iot.domain.system;
 
-import it.unibo.iot.domain.impl.prodcons.v1.ConsumerServer;
-import it.unibo.iot.domain.impl.prodcons.v1.ProducerClient;
+import it.unibo.iot.domain.impl.prodcons.v2.ConsumerServerWithAck;
+import it.unibo.iot.domain.impl.prodcons.v2.ProducerClientWithAck;
 import it.unibo.iot.domain.impl.support.LogEmitterFactory;
 import it.unibo.iot.domain.interfaces.Configurator;
 import it.unibo.iot.domain.interfaces.EmitterFactory;
-import it.unibo.iot.interaction.impl.ZMQConnectionFactories;
-import it.unibo.iot.interaction.interfaces.ConnectionFactory;
+import it.unibo.iot.interaction.impl.ZMQConnectionReqRep;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
-public class ConfiguratorOneToOneClientServer implements Configurator {
+public class ConfiguratorOneToOneClientServerWithAck implements Configurator {
     private Runnable producerClient;
     private Runnable consumerServer;
     private int bufferCapacity;
-    ConnectionFactory connectionFactory;
     private static final int port = 8001;
     private static final String host = "127.0.0.1";
 
     public static void main(String[] args) throws InterruptedException {
-        //ConnectionFactory factory = new TCPConnectionFactory();
-        ConnectionFactory factory = ZMQConnectionFactories.PubSub;
-        ConfiguratorOneToOneClientServer configurator = new ConfiguratorOneToOneClientServer(10, factory);
+        ConfiguratorOneToOneClientServerWithAck configurator = new ConfiguratorOneToOneClientServerWithAck(10);
         configurator.setup();
         configurator.start();
         Thread.sleep(TimeUnit.SECONDS.toMillis(5));
         configurator.teardown();
     }
 
-    public ConfiguratorOneToOneClientServer(int bufferCapacity, ConnectionFactory cf) {
+    public ConfiguratorOneToOneClientServerWithAck(int bufferCapacity) {
         this.bufferCapacity = bufferCapacity;
-        this.connectionFactory = cf;
     }
 
     @Override public void setup(){
         EmitterFactory ef = new LogEmitterFactory();
-        consumerServer = new ConsumerServer(ef, connectionFactory.connection(), port);
-        producerClient = new ProducerClient(ef, connectionFactory.connection(), host, port);
+        consumerServer = new ConsumerServerWithAck(ef, new ZMQConnectionReqRep(), port);
+        producerClient = new ProducerClientWithAck(ef, new ZMQConnectionReqRep(), host, port);
     }
 
     @Override public void start(){
