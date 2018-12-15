@@ -17,6 +17,9 @@ public class ProducerConsumerAssertions {
                 .map(s -> s.substring(s.lastIndexOf(" ")))
                 .collect(Collectors.toList());
 
+        System.out.println(producedStuff);
+        System.out.println(consumedStuff);
+
         Assert.assertTrue(producedStuff.size()>0);
         Assert.assertTrue(producedStuff.size()==consumedStuff.size());
         Assert.assertTrue(Streams.zip(producedStuff.stream(), consumedStuff.stream(), (a, b) -> a.equals(b)).allMatch(x -> x));

@@ -4,6 +4,7 @@ import it.unibo.iot.domain.impl.prodcons.v1.ConsumerServer;
 import it.unibo.iot.domain.impl.prodcons.v1.ProducerClient;
 import it.unibo.iot.domain.impl.support.EventEmitterFactory;
 import it.unibo.iot.domain.impl.support.EventService;
+import it.unibo.iot.domain.impl.support.EventServiceServerPort;
 import it.unibo.iot.domain.impl.support.GlobalConfig;
 import it.unibo.iot.domain.interfaces.EmitterFactory;
 import it.unibo.iot.interaction.impl.ZMQConnectionFactories;
@@ -24,7 +25,7 @@ public class ConfiguratorOneToOneClientServerTest {
         final ExecutorService es = Executors.newCachedThreadPool();
         ConnectionFactory cf = ZMQConnectionFactories.PubSub;
         EmitterFactory ef = new EventEmitterFactory();
-        evs = new EventService(GlobalConfig.EventServicePort);
+        evs = new EventService(new EventServiceServerPort(GlobalConfig.EventServicePort));
         es.execute(evs);
         es.execute(new ConsumerServer(ef, cf.connection(), 9000));
         Thread.sleep(TimeUnit.SECONDS.toMillis(1));

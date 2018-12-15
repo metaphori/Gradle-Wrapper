@@ -1,22 +1,20 @@
-package it.unibo.iot.domain.impl.prodcons.v3;
+package it.unibo.iot.domain.impl.support;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.unibo.iot.domain.impl.support.GlobalConfig;
-import it.unibo.iot.domain.interfaces.ConsumerPort;
-import it.unibo.iot.domain.interfaces.ConsumptionSource;
+import it.unibo.iot.domain.interfaces.EventServicePort;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class BasicMqttConsumerPort implements ConsumerPort {
+public class EventServiceMqttPort implements EventServicePort {
     private static final Gson GSON = new GsonBuilder().create();
     private final BlockingQueue queue = new ArrayBlockingQueue(10);
     private final MqttClient client;
 
-    public BasicMqttConsumerPort(String serverURI, String clientId) throws MqttException {
+    public EventServiceMqttPort(String serverURI, String clientId) throws MqttException {
         client = new MqttClient(serverURI, clientId, new MemoryPersistence());
         MqttConnectOptions opts = new MqttConnectOptions();
         opts.setCleanSession(true);
@@ -38,8 +36,7 @@ public class BasicMqttConsumerPort implements ConsumerPort {
         });
     }
 
-    @Override
-    public Object receiveElementForConsumption(ConsumptionSource source) {
+    @Override public Object getEvent() {
         try {
             return queue.take();
         } catch (InterruptedException e) {
