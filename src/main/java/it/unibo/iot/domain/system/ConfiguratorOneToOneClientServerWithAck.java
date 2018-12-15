@@ -2,6 +2,7 @@ package it.unibo.iot.domain.system;
 
 import it.unibo.iot.domain.impl.prodcons.v2.ConsumerServerWithAck;
 import it.unibo.iot.domain.impl.prodcons.v2.ProducerClientWithAck;
+import it.unibo.iot.domain.impl.support.GlobalConfig;
 import it.unibo.iot.domain.impl.support.LogEmitterFactory;
 import it.unibo.iot.domain.interfaces.Configurator;
 import it.unibo.iot.domain.interfaces.EmitterFactory;
@@ -31,8 +32,8 @@ public class ConfiguratorOneToOneClientServerWithAck implements Configurator {
 
     @Override public void setup(){
         EmitterFactory ef = new LogEmitterFactory();
-        consumerServer = new ConsumerServerWithAck(ef, new ZMQConnectionReqRep(), port);
-        producerClient = new ProducerClientWithAck(ef, new ZMQConnectionReqRep(), host, port);
+        consumerServer = new ConsumerServerWithAck(ef.createEmitter("cons-emitter",GlobalConfig.EventServiceHost, GlobalConfig.EventServicePort), new ZMQConnectionReqRep(), port);
+        producerClient = new ProducerClientWithAck(ef.createEmitter("prod-emitter",GlobalConfig.EventServiceHost, GlobalConfig.EventServicePort), new ZMQConnectionReqRep(), host, port);
     }
 
     @Override public void start(){

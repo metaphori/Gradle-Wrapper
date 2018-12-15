@@ -5,7 +5,7 @@ import it.unibo.iot.domain.interfaces.EmitterFactory;
 
 public class LogEmitterFactory implements EmitterFactory {
     @Override
-    public Emitter createEmitter(String name) {
+    public Emitter createEmitter(String name, String host, int port) {
         return new LogEmitter(name);
     }
 }

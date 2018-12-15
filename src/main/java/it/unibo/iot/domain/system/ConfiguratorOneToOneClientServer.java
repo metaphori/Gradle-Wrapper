@@ -2,6 +2,7 @@ package it.unibo.iot.domain.system;
 
 import it.unibo.iot.domain.impl.prodcons.v1.ConsumerServer;
 import it.unibo.iot.domain.impl.prodcons.v1.ProducerClient;
+import it.unibo.iot.domain.impl.support.GlobalConfig;
 import it.unibo.iot.domain.impl.support.LogEmitterFactory;
 import it.unibo.iot.domain.interfaces.Configurator;
 import it.unibo.iot.domain.interfaces.EmitterFactory;
@@ -36,8 +37,8 @@ public class ConfiguratorOneToOneClientServer implements Configurator {
 
     @Override public void setup(){
         EmitterFactory ef = new LogEmitterFactory();
-        consumerServer = new ConsumerServer(ef, connectionFactory.connection(), port);
-        producerClient = new ProducerClient(ef, connectionFactory.connection(), host, port);
+        consumerServer = new ConsumerServer(ef.createEmitter("cons-emitter", GlobalConfig.EventServiceHost, GlobalConfig.EventServicePort), connectionFactory.connection(), port);
+        producerClient = new ProducerClient(ef.createEmitter("prod-emitter",GlobalConfig.EventServiceHost, GlobalConfig.EventServicePort), connectionFactory.connection(), host, port);
     }
 
     @Override public void start(){

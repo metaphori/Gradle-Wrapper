@@ -7,9 +7,9 @@ import java.io.IOException;
 
 public class EventEmitterFactory implements EmitterFactory {
     @Override
-    public Emitter createEmitter(String name) {
+    public Emitter createEmitter(String name, String host, int port) {
         try {
-            return new EventEmitter(name);
+            return new EventEmitter(host, port);
         } catch (IOException e) {
             return new LogEmitter(name + "-ERROR");
         }

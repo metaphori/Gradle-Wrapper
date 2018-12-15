@@ -15,8 +15,8 @@ public class ProducerClient implements Producer, Runnable {
     private final int port;
     private int k = 0;
 
-    public ProducerClient(EmitterFactory ef, Connection connection, String host, int port) {
-        this.E = ef.createEmitter(ProducerClient.class.getName());
+    public ProducerClient(Emitter emitter, Connection connection, String host, int port) {
+        this.E = emitter;
         this.connection = connection;
         this.host = host;
         this.port = port;

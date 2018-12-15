@@ -14,8 +14,8 @@ public class ConsumerServerWithAck implements Consumer, Runnable {
     private Connection connection;
     private int port;
 
-    public ConsumerServerWithAck(EmitterFactory ef, Connection connection, int port) {
-        this.E = ef.createEmitter(ConsumerServerWithAck.class.getName());
+    public ConsumerServerWithAck(Emitter emitter, Connection connection, int port) {
+        this.E = emitter;
         this.connection = connection;
         this.port = port;
     }

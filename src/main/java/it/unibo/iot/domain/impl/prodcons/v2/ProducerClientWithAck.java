@@ -16,8 +16,8 @@ public class ProducerClientWithAck implements Producer, Runnable {
     private final int port;
     private int k = 0;
 
-    public ProducerClientWithAck(EmitterFactory ef, Connection connection, String host, int port) {
-        this.E = ef.createEmitter(ProducerClientWithAck.class.getName());
+    public ProducerClientWithAck(Emitter emitter, Connection connection, String host, int port) {
+        this.E = emitter;
         this.connection = connection;
         this.host = host;
         this.port = port;

@@ -26,11 +26,13 @@ public class ConfiguratorOneToOneClientServerAckTest {
         ConnectionFactory cf = new TCPConnectionFactory();
         //ConnectionFactory cf = ZMQConnectionFactories.ReqRep;
         EmitterFactory ef = new EventEmitterFactory();
-        evs = new EventService(new EventServiceServerPort(GlobalConfig.EventServicePort));
+        int esport = TestUtils.getEphemeralPort();
+        evs = new EventService(new EventServiceServerPort(esport));
         es.execute(evs);
-        es.execute(new ConsumerServerWithAck(ef, cf.connection(), 9000));
+        int port = TestUtils.getEphemeralPort();
+        es.execute(new ConsumerServerWithAck(ef.createEmitter("", "127.0.0.1", esport), cf.connection(), port));
         Thread.sleep(TimeUnit.SECONDS.toMillis(1));
-        es.execute(new ProducerClientWithAck(ef, cf.connection(), "127.0.0.1", 9000));
+        es.execute(new ProducerClientWithAck(ef.createEmitter("", "127.0.0.1", esport), cf.connection(), "127.0.0.1", port));
         es.shutdown();
         es.awaitTermination(5, TimeUnit.SECONDS);
     }

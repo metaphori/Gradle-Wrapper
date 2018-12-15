@@ -9,8 +9,8 @@ import java.io.IOException;
 public class EventEmitter implements Emitter {
     private ConnectionHandle handle;
 
-    public EventEmitter(String name) throws IOException {
-        handle = ZMQConnectionFactories.PubSub.connection().connectAsClient(GlobalConfig.EventServiceHost, GlobalConfig.EventServicePort);
+    public EventEmitter(String host, int port) throws IOException {
+        handle = ZMQConnectionFactories.PubSub.connection().connectAsClient(host, port);
     }
 
     @Override

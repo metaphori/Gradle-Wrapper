@@ -13,8 +13,8 @@ public class ConsumerServer implements Consumer, Runnable {
     private Connection connection;
     private int port;
 
-    public ConsumerServer(EmitterFactory ef, Connection connection, int port) {
-        this.E = ef.createEmitter(ConsumerServer.class.getName());
+    public ConsumerServer(Emitter emitter, Connection connection, int port) {
+        this.E = emitter;
         this.connection = connection;
         this.port = port;
     }
