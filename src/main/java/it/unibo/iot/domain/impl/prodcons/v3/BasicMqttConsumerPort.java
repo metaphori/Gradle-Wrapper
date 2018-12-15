@@ -15,8 +15,10 @@ public class BasicMqttConsumerPort implements ConsumerPort {
     private static final Gson GSON = new GsonBuilder().create();
     private final BlockingQueue queue = new ArrayBlockingQueue(10);
     private final MqttClient client;
+    private final String clientId;
 
     public BasicMqttConsumerPort(String serverURI, String clientId) throws MqttException {
+        this.clientId = clientId;
         client = new MqttClient(serverURI, clientId, new MemoryPersistence());
         MqttConnectOptions opts = new MqttConnectOptions();
         opts.setCleanSession(true);
@@ -41,8 +43,11 @@ public class BasicMqttConsumerPort implements ConsumerPort {
     @Override
     public Object receiveElementForConsumption(ConsumptionSource source) {
         try {
-            return queue.take();
-        } catch (InterruptedException e) {
+            Object next = queue.take();
+            byte[] msg = new Gson().toJson("Consume " + clientId + "/" + next).getBytes();
+            client.publish(GlobalConfig.ConsumptionActivityTopic, new MqttMessage(msg));
+            return next;
+        } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException(e);
         }

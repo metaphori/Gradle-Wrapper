@@ -24,6 +24,9 @@ public class BasicMqttProducerPort implements ProducerPort {
     public void sendProduction(ProductionTarget target, Object product) {
         byte[] msg = new Gson().toJson(product).getBytes();
         try {
+            byte[] log = new Gson().toJson("Produce " +product).getBytes();
+            client.publish(GlobalConfig.ProductionActivityTopic, new MqttMessage(log));
+
             client.publish(GlobalConfig.ProductionTopic, new MqttMessage(msg));
         } catch (MqttException e) {
             e.printStackTrace();

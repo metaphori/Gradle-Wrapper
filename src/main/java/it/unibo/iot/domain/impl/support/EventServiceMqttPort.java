@@ -19,7 +19,8 @@ public class EventServiceMqttPort implements EventServicePort {
         MqttConnectOptions opts = new MqttConnectOptions();
         opts.setCleanSession(true);
         client.connect(opts);
-        client.subscribe(GlobalConfig.ProductionTopic);
+        client.subscribe(GlobalConfig.ProductionActivityTopic);
+        client.subscribe(GlobalConfig.ConsumptionActivityTopic);
         client.setCallback(new MqttCallback() {
             @Override  public void connectionLost(Throwable cause) {  }
 
