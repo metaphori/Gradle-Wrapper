@@ -24,3 +24,6 @@ tasks {
 
 val jacocoTestReport by tasks.named("jacocoTestReport")
 jacocoTestReport.dependsOn(tasks.named("test"))
+
+val buildDashboard by tasks.named("buildDashboard")
+buildDashboard.dependsOn(tasks.named("jacocoTestReport"))
