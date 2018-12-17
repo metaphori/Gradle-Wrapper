@@ -16,3 +16,5 @@ deploy:
   provider: surge
   project: build/reports/buildDashboard/
   domain: grumpy-req.surge.sh
+  on:
+    all_branches: true
