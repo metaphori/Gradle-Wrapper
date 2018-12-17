@@ -13,6 +13,7 @@ script:
   - ./gradlew clean buildDashboard
 
 deploy:
+  skip_cleanup: true
   provider: surge
   project: build/reports/buildDashboard/
   domain: grumpy-req.surge.sh
