@@ -15,7 +15,7 @@ script:
 deploy:
   skip_cleanup: true
   provider: surge
-  project: build/reports/buildDashboard/
+  project: build/reports/
   domain: grumpy-req.surge.sh
   on:
     all_branches: true
