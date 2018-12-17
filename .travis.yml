@@ -1,7 +1,18 @@
 language: java
 
+env:
+  global:
+  - SURGE_LOGIN=robyonrails@gmail.com
+  - secure: "l772IFyQFZleB6mXxitjlFqZ/kVXxkx0UJmNe93THV/lbWCIjbYOsCVfFlfbRY0JzTBLHBkHEzvg9yEJ8ykiDhYatpU4goSQ2VO6GKr7fgQ2yEnSTcCTQP4oZhmE9zNtOWoNSvSqPKnQPVRlv5LWkGI5tKGuDIeTBdbHawAEt6rLazQ7OnO6AHMLkbBT8iDJMu0bckTtOJR93W5pL/UL5Lz47fpbUlEquYBQl7Xi96ndqIUif+kv3uNJvo7hVRkXauSi8Qm1sE9GyxWHcdRWU6Fmwpfh8r9erSxzLzM+0Oj9Bj9tQNkxTniUc+pv0Ddk3ayHN7M7GiEvZNFtjRraHCRvTRpqOBWhz5/lh85koyFUgDIHZdHN4EwkGh6RPyJnSek06cmzvUMcaCA/rvC6tw6r0XMV4JERGMItkvvrI0sruxOrTs6Meal5YE8KRVVoRHmaWEzr6nY8TY9FNxWoBA32rEAhPeHs2TV9JkYViq3m+M2iLHOOpGDMyFxCjH+W1yvSG0SPdMmYm1dWgwBMf7RKT+GekoM6/dKgdmCgGL+FrhDEbPKFLxWUDKFarVJFmlZcPknrG2B9hBMmXRyd0D5uBcQDcYkLYJtvQo0REUt64H8/EqsCxlT8lgPT7uQfDYG1Fd5EFQdzhpvx+MyhyIaOtXotVhvnO13HY9qy37g="
+
+
 install:
   - echo "Do nothing"
 
 script:
   - ./gradlew clean buildDashboard
+
+deploy:
+  provider: surge
+  project: build/reports/buildDashboard/
+  domain: grumpy-req.surge.sh
